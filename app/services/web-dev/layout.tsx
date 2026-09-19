@@ -24,7 +24,7 @@ export default function ServicesLayout({
       </aside>
 
       {/* সাব-পেজের কনটেন্ট */}
-      <section className="flex-1 bg-base-200 p-6 rounded-box min-h-[250px]">
+      <section className="flex-1 bg-base-200 p-6 rounded-box `min-h-[250px]`">
         {children}
       </section>
     </div>
