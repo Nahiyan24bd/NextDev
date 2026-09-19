@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { Globe, Smartphone, Layers } from "lucide-react";
 
 export default function ServicesLayout({
   children,
@@ -7,26 +8,50 @@ export default function ServicesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-4">
-      {/* সার্ভিস সেকশনের ডেডিকেটেড সাইডবার */}
-      <aside className="w-full md:w-56 bg-base-200 p-4 rounded-box h-fit">
-        <h3 className="font-bold text-lg mb-3 border-b border-base-300 pb-2">
-          Services
-        </h3>
-        <ul className="menu gap-1 p-0">
-          <li>
-            <Link href="/services/web-dev">Web Development</Link>
-          </li>
-          <li>
-            <Link href="/services/app-dev">App Development</Link>
-          </li>
-        </ul>
-      </aside>
+    <div className="max-w-6xl mx-auto py-4 space-y-6">
+      {/* হেডার */}
+      <div className="border-b border-base-300 pb-4">
+        <h1 className="text-3xl font-extrabold text-primary flex items-center gap-2">
+          <Layers className="w-8 h-8" /> Our Services
+        </h1>
+        <p className="text-gray-400 text-sm mt-1">
+          Explore the professional digital solutions we build for modern businesses.
+        </p>
+      </div>
 
-      {/* সাব-পেজের কনটেন্ট */}
-      <section className="flex-1 bg-base-200 p-6 rounded-box `min-h-[250px]`">
-        {children}
-      </section>
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        {/* সার্ভিস সাইডবার */}
+        <aside className="w-full md:w-64 bg-base-200 border border-base-300 p-4 rounded-2xl shadow-sm">
+          <span className="text-xs font-semibold text-gray-400 tracking-wider uppercase px-3">
+            Service Menu
+          </span>
+          <ul className="menu gap-2 mt-3 p-0">
+            <li>
+              <Link
+                href="/services/web-dev"
+                className="flex items-center gap-3 py-3 px-4 rounded-xl hover:bg-primary hover:text-white transition-all font-medium"
+              >
+                <Globe className="w-5 h-5" />
+                <span>Web Development</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/services/app-dev"
+                className="flex items-center gap-3 py-3 px-4 rounded-xl hover:bg-primary hover:text-white transition-all font-medium"
+              >
+                <Smartphone className="w-5 h-5" />
+                <span>App Development</span>
+              </Link>
+            </li>
+          </ul>
+        </aside>
+
+        {/* সাব-পেজের কনটেন্ট এরিয়া */}
+        <section className="flex-1 w-full bg-base-200 border border-base-300 p-6 md:p-8 rounded-2xl shadow-sm `min-h-[400px`]">
+          {children}
+        </section>
+      </div>
     </div>
   );
 }
