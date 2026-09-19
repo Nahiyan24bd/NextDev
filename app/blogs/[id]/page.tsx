@@ -1,54 +1,37 @@
 import Link from "next/link";
 import React from "react";
 import type { Metadata } from "next";
+import db from "@/db.json";
 
-interface Blog {
-  id: string;
-  title: string;
-  desc: string;
-  author: string;
-  date: string;
-}
-
-// বিল্ড টাইমে সব ব্লগের পাথ তৈরি করে রাখা (SSG Optimization)
 export async function generateStaticParams() {
-  const res = await fetch("http://localhost:5000/blogs");
-  const blogs: Blog[] = await res.json();
-
-  return blogs.map((blog) => ({
-    id: blog.id,
+  return db.blogs.map((blog) => ({
+    id: String(blog.id),
   }));
 }
 
-// Dynamic SEO Metadata
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const res = await fetch(`http://localhost:5000/blogs/${id}`);
-  const blog: Blog = await res.json();
+  const blog = db.blogs.find((item) => String(item.id) === String(id));
 
   return {
-    title: `${blog.title} | NextDev`,
-    description: blog.desc,
+    title: blog ? `${blog.title} | NextDev` : "Blog Details | NextDev",
+    description: blog ? blog.desc : "Blog details description",
   };
 }
 
-// Blog Details Component
 export default async function BlogDetailsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const blog = db.blogs.find((item) => String(item.id) === String(id));
 
-  const res = await fetch(`http://localhost:5000/blogs/${id}`, {
-    next: { revalidate: 60 },
-  });
-
-  if (!res.ok) {
+  if (!blog) {
     return (
       <div className="text-center py-20 space-y-4">
         <h2 className="text-2xl font-bold text-error">Blog not found!</h2>
@@ -58,8 +41,6 @@ export default async function BlogDetailsPage({
       </div>
     );
   }
-
-  const blog: Blog = await res.json();
 
   return (
     <div className="max-w-3xl mx-auto bg-base-200 border border-base-300 p-8 rounded-2xl shadow-xl space-y-6">

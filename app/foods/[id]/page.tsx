@@ -4,14 +4,12 @@ import React from "react";
 import type { Metadata } from "next";
 import AddToCartBtn from "@/app/components/AddToCartBtn";
 import { ArrowLeft } from "lucide-react";
+import db from "@/db.json";
 
-interface Food {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-  description: string;
+export async function generateStaticParams() {
+  return db.foods.map((food) => ({
+    id: String(food.id),
+  }));
 }
 
 export async function generateMetadata({
@@ -20,14 +18,11 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const res = await fetch(`http://localhost:5000/foods/${id}`, {
-    cache: "no-store",
-  });
-  const food: Food = await res.json();
+  const food = db.foods.find((item) => String(item.id) === String(id));
 
   return {
-    title: `${food.name} | NextDev Food`,
-    description: food.description,
+    title: food ? `${food.name} | NextDev Food` : "Food Item",
+    description: food ? food.description : "Food item details",
   };
 }
 
@@ -37,12 +32,9 @@ export default async function FoodDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const food = db.foods.find((item) => String(item.id) === String(id));
 
-  const res = await fetch(`http://localhost:5000/foods/${id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
+  if (!food) {
     return (
       <div className="text-center py-20 space-y-4">
         <h2 className="text-2xl font-bold text-error">Food item not found!</h2>
@@ -52,8 +44,6 @@ export default async function FoodDetailsPage({
       </div>
     );
   }
-
-  const food: Food = await res.json();
 
   return (
     <div className="max-w-3xl mx-auto bg-base-200 border border-base-300 rounded-2xl overflow-hidden shadow-xl">
@@ -80,8 +70,6 @@ export default async function FoodDetailsPage({
           <Link href="/foods" className="btn btn-outline btn-sm gap-2">
             <ArrowLeft className="w-4 h-4" /> Back to Foods
           </Link>
-          
-          {/* এখানে বাটনটি রিপ্লেস করো */}
           <AddToCartBtn food={food} />
         </div>
       </div>
