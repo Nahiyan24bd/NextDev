@@ -3,6 +3,9 @@ import React from "react";
 import type { Metadata } from "next";
 import db from "@/db.json";
 
+
+
+// লোকাল ডেটা দিয়ে বিল্ড টাইমে পাথ জেনারেট করা
 export async function generateStaticParams() {
   return db.blogs.map((blog) => ({
     id: String(blog.id),
