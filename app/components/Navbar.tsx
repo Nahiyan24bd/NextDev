@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { ShoppingCart, Menu } from "lucide-react";
 import { useCart } from "../context/CartContext";
-import { NAV_LINKS } from "./navLinks"; // ডাইনামিক ডেটা সোর্স
+import { NAV_LINKS } from "./navLinks";
+import ThemeToggle from "./ThemeToggle"; // ১. ইমপোর্ট করো
 
 export default function Navbar() {
   const { cart } = useCart();
@@ -12,7 +13,7 @@ export default function Navbar() {
   return (
     <header className="w-full bg-base-100 border-b border-base-300 sticky top-0 z-50">
       <div className="navbar max-w-6xl mx-auto px-4">
-        {/* Mobile Hamburger */}
+        {/* Mobile Hamburger & Brand */}
         <div className="navbar-start">
           <div className="dropdown lg:hidden">
             <label tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -46,8 +47,12 @@ export default function Navbar() {
           </ul>
         </div>
 
-        {/* Cart & Login */}
+        {/* End Actions: Theme Toggle, Cart, Login */}
         <div className="navbar-end gap-2">
+          {/* থিম টগল বাটন */}
+          <ThemeToggle />
+
+          {/* Cart Icon */}
           <Link href="/cart" className="btn btn-ghost btn-circle relative">
             <ShoppingCart className="w-5 h-5" />
             {totalItems > 0 && (
@@ -56,6 +61,8 @@ export default function Navbar() {
               </span>
             )}
           </Link>
+
+          {/* Login */}
           <button className="btn btn-primary btn-sm">Login</button>
         </div>
       </div>
