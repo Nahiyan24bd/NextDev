@@ -1,23 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-
-interface Food {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  image: string;
-  description: string;
-}
+import db from "@/db.json";
 
 export default async function FoodList() {
-  // স্ট্রিমিং দেখার সুবিধার্থে কৃত্রিমভাবে ২ সেকেন্ড ডিলে (Delay)
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  const res = await fetch("http://localhost:5000/foods", {
-    cache: "no-store",
-  });
-  const foods: Food[] = await res.json();
+  // লাইভ সার্ভারে ক্র্যাশ এড়াতে সরাসরি db.json থেকে ডেটা নেওয়া
+  const foods = db.foods;
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
